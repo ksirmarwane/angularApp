@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductService} from "../../services/product.service";
 import {Product} from "../../models/product.model";
-import {catchError, map, Observable, of} from "rxjs";
+import {catchError, map, Observable, of, startWith} from "rxjs";
+import {DataEnumStatus, DataStatus} from "../../states/data.status";
 
 @Component({
   selector: 'app-products',
@@ -11,7 +12,8 @@ import {catchError, map, Observable, of} from "rxjs";
 export class ProductsComponent implements OnInit {
 
   //products? : Array<Product>;
-  products$?: Observable<Array<Product>>
+  products$?: Observable<DataStatus<Array<Product>>>;
+  productDataStatusEnum = DataEnumStatus;
 
   constructor(private productService: ProductService) {
   }
@@ -38,11 +40,10 @@ export class ProductsComponent implements OnInit {
   onGetAllProducts() {
     this.products$ = this.productService.getAllProducts().pipe(
       map(data => {
-        return data
+        return {status: DataEnumStatus.LOADED, data: data}
       }),
-      catchError(err => {
-        return of([{id: -1, name: err.message}]);
-      })
+      startWith({status: DataEnumStatus.LOADING}),
+      catchError((error) => of({status: DataEnumStatus.ERROR, errorMessage: error.message}))
     );
   }
 

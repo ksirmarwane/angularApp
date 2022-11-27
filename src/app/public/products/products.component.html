@@ -1,33 +1,41 @@
 <div class="container product-cards-container mt-3 ">
   <div class="row">
-    <ng-container *ngIf="(products$ | async) as listProducts else Loading;">
-      <div class="product-card-row" *ngFor="let p of listProducts">
-        <mat-card class="product-card">
-          <mat-card-header>
-            <mat-card-title>{{p.name}}</mat-card-title>
-          </mat-card-header>
-          <img mat-card-image src="{{p.image}}" alt="{{p.image}}">
-          <mat-card-content style="min-height: 80px;">
-            <p>{{p.description}}</p>
-          </mat-card-content>
-
-          <mat-card-actions>
-            <li class="d-flex justify-content-between align-items-center">
+    <ng-container *ngIf="(products$ | async) as result">
+      <ng-container [ngSwitch]="result.status">
+        <ng-container *ngSwitchCase="productDataStatusEnum.ERROR">
+          <div class="alert alert-danger">
+            {{ result.errorMessage}}
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="productDataStatusEnum.LOADING">
+          Loading ... !
+        </ng-container>
+        <ng-container *ngSwitchCase="productDataStatusEnum.LOADED">
+          <div class="product-card-row" *ngFor="let p of result.data">
+            <mat-card class="product-card">
+              <mat-card-header>
+                <mat-card-title>{{p.name}}</mat-card-title>
+              </mat-card-header>
+              <img mat-card-image src="{{p.image}}" alt="{{p.image}}">
+              <mat-card-content style="min-height: 80px;">
+                <p>{{p.description}}</p>
+              </mat-card-content>
+              <mat-card-actions>
+                <li class="d-flex justify-content-between align-items-center">
               <span [ngClass]="!p.available ? 'badge badge-warning badge-pill' : 'badge badge-primary badge-pill'">
                 Quantity : {{p.available ? p.quantity : '0'}}</span>
-              <span class="badge badge-primary badge-pill" *ngIf="p.available">
+                  <span class="badge badge-primary badge-pill" *ngIf="p.available">
                 Available
               </span>
-              <span class="badge badge-danger badge-pill" *ngIf="!(p.available)">
+                  <span class="badge badge-danger badge-pill" *ngIf="!(p.available)">
                 Not Available
               </span>
-            </li>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+                </li>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </ng-container>
+      </ng-container>
     </ng-container>
-    <ng-template #Loading>
-      <mat-spinner></mat-spinner>
-    </ng-template>
   </div>
 </div>
