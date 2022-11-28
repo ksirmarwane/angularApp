@@ -17,4 +17,20 @@ export class ProductService {
   getAllProducts(): Observable<Array<Product>> {
     return this.http.get<Array<Product>>(this.host + '/products');
   }
+
+  getAvailableProducts(): Observable<Array<Product>> {
+    return this.http.get<Array<Product>>(this.host + '/products?available=true');
+  }
+
+  getSelectedProducts(): Observable<Array<Product>> {
+    return this.http.get<Array<Product>>(this.host + '/products?selected=true');
+  }
+
+  getSearchProducts(query?: string): Observable<Array<Product>> {
+    console.log('inside service ', query);
+    if (query == '' || query == undefined) {
+      throw new Error('Required Parameter : query was null or defined when calling search')
+    }
+    return this.http.get<Array<Product>>(this.host + '/products?name_like=' + query);
+  }
 }

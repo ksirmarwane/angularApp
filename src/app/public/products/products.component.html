@@ -11,7 +11,7 @@
           Loading ... !
         </ng-container>
         <ng-container *ngSwitchCase="productDataStatusEnum.LOADED">
-          <div class="product-card-row" *ngFor="let p of result.data">
+          <div class="product-card-row" *ngFor="let p of result.data ">
             <mat-card class="product-card">
               <mat-card-header>
                 <mat-card-title>{{p.name}}</mat-card-title>

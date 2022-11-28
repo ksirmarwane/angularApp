@@ -7,6 +7,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {ProductsComponent} from './products/products.component';
 import {MaterialDesignModule} from "../material-design/material-design.module";
 import {NgxPaginationModule} from "ngx-pagination";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     CommonModule,
     AdminRoutingModule,
     MaterialDesignModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    FormsModule
   ]
 })
 export class AdminModule {
